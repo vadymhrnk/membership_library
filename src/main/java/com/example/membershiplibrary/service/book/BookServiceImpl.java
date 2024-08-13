@@ -9,6 +9,7 @@ import com.example.membershiplibrary.model.Book;
 import com.example.membershiplibrary.repository.BookRepository;
 import com.example.membershiplibrary.service.BookService;
 import java.util.List;
+import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -22,8 +23,22 @@ public class BookServiceImpl implements BookService {
     private final BookRepository bookRepository;
 
     @Override
+    @Transactional
     public BookResponseDto save(CreateBookRequestDto requestDto) {
         Book book = bookMapper.toModel(requestDto);
+
+        Optional<Book> optionalBook = bookRepository.findByTitleAndAuthor(
+                book.getTitle(),
+                book.getAuthor()
+        );
+
+        if (optionalBook.isPresent()) {
+            Book existingBook = optionalBook.get();
+            existingBook.setAmount(existingBook.getAmount() + 1);
+            return bookMapper.toResponseDto(bookRepository.save(existingBook));
+        }
+
+        book.setAmount(1);
         return bookMapper.toResponseDto(bookRepository.save(book));
     }
 

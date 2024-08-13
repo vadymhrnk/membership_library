@@ -1,12 +1,13 @@
 package com.example.membershiplibrary.dto.book;
 
-import jakarta.validation.constraints.NotBlank;
+import com.example.membershiplibrary.annotation.book.ValidAuthorName;
+import com.example.membershiplibrary.annotation.book.ValidBookTitle;
 import lombok.Data;
 
 @Data
 public class CreateBookRequestDto {
-    @NotBlank
+    @ValidBookTitle
     private String title;
-    @NotBlank
+    @ValidAuthorName
     private String author;
 }
