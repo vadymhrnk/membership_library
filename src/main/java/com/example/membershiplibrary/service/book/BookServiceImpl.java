@@ -3,6 +3,7 @@ package com.example.membershiplibrary.service.book;
 import com.example.membershiplibrary.dto.book.BookResponseDto;
 import com.example.membershiplibrary.dto.book.CreateBookRequestDto;
 import com.example.membershiplibrary.dto.book.UpdateBookRequestDto;
+import com.example.membershiplibrary.exception.EntityNotFoundException;
 import com.example.membershiplibrary.mapper.BookMapper;
 import com.example.membershiplibrary.model.Book;
 import com.example.membershiplibrary.repository.BookRepository;
@@ -11,6 +12,7 @@ import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @RequiredArgsConstructor
@@ -26,16 +28,24 @@ public class BookServiceImpl implements BookService {
 
     @Override
     public List<BookResponseDto> getAll(Pageable pageable) {
-        return null;
+        List<Book> books = bookRepository.findAll();
+        return bookMapper.toResponseDtoList(books);
     }
 
     @Override
+    @Transactional
     public BookResponseDto updateById(Long id, UpdateBookRequestDto updateRequestDto) {
-        return null;
+        Book book = bookRepository.findById(id).orElseThrow(
+                () -> new EntityNotFoundException("Can't find book with id: " + id)
+        );
+        book.setTitle(updateRequestDto.getTitle());
+        book.setAuthor(updateRequestDto.getAuthor());
+        book.setAmount(updateRequestDto.getAmount());
+        return bookMapper.toResponseDto(bookRepository.save(book));
     }
 
     @Override
     public void deleteById(Long id) {
-
+        bookRepository.deleteById(id);
     }
 }
