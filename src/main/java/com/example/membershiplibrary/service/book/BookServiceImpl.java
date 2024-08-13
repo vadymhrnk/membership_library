@@ -10,6 +10,7 @@ import com.example.membershiplibrary.repository.BookRepository;
 import com.example.membershiplibrary.service.BookService;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -28,7 +29,7 @@ public class BookServiceImpl implements BookService {
 
     @Override
     public List<BookResponseDto> getAll(Pageable pageable) {
-        List<Book> books = bookRepository.findAll();
+        Page<Book> books = bookRepository.findAll(pageable);
         return bookMapper.toResponseDtoList(books);
     }
 

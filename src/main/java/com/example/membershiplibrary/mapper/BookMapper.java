@@ -7,6 +7,7 @@ import com.example.membershiplibrary.model.Book;
 import java.util.List;
 import org.mapstruct.IterableMapping;
 import org.mapstruct.Mapper;
+import org.springframework.data.domain.Page;
 
 @Mapper(config = MapperConfig.class)
 public interface BookMapper {
@@ -15,5 +16,5 @@ public interface BookMapper {
     BookResponseDto toResponseDto(Book book);
 
     @IterableMapping(elementTargetType = BookResponseDto.class)
-    List<BookResponseDto> toResponseDtoList(List<Book> riskCountries);
+    List<BookResponseDto> toResponseDtoList(Page<Book> books);
 }
