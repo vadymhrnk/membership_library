@@ -1,0 +1,36 @@
+databaseChangeLog:
+  - changeSet:
+      id: create-members-books-table
+      author: vadymhrnk
+      changes:
+        - createTable:
+            tableName: members_books
+            columns:
+              - column:
+                  name: id
+                  type: bigint
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: book_id
+                  type: bigint
+                  constraints:
+                    nullable: false
+                    foreignKeyName: fk_members_books_book_id
+                    deleteCascade: true
+                    references: books(id)
+              - column:
+                  name: member_id
+                  type: bigint
+                  constraints:
+                    nullable: false
+                    foreignKeyName: fk_members_books_member_id
+                    deleteCascade: true
+                    references: members(id)
+              - column:
+                  name: borrowed_quantity
+                  type: integer
+                  constraints:
+                    nullable: false

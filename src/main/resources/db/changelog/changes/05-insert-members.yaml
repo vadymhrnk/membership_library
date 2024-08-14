@@ -1,0 +1,32 @@
+databaseChangeLog:
+  - changeSet:
+      id: insert-members
+      author: vadymhrnk
+      changes:
+        - insert:
+            tableName: members
+            columns:
+              - column:
+                  name: name
+                  value: "Alice Johnson"
+              - column:
+                  name: membership_date
+                  valueDate: "2024-08-10"
+        - insert:
+            tableName: members
+            columns:
+              - column:
+                  name: name
+                  value: "Bob Smith"
+              - column:
+                  name: membership_date
+                  valueDate: "2024-08-10"
+        - insert:
+            tableName: members
+            columns:
+              - column:
+                  name: name
+                  value: "Charlie Brown"
+              - column:
+                  name: membership_date
+                  valueDate: "2024-08-10"

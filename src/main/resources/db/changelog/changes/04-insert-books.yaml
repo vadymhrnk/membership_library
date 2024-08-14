@@ -1,0 +1,41 @@
+databaseChangeLog:
+  - changeSet:
+      id: insert-books
+      author: vadymhrnk
+      changes:
+        - insert:
+            tableName: books
+            columns:
+              - column:
+                  name: title
+                  value: "The Metamorphosis"
+              - column:
+                  name: author
+                  value: "Franz Kafka"
+              - column:
+                  name: amount
+                  value: 8
+        - insert:
+            tableName: books
+            columns:
+              - column:
+                  name: title
+                  value: "To Kill a Mockingbird"
+              - column:
+                  name: author
+                  value: "Harper Lee"
+              - column:
+                  name: amount
+                  value: 10
+        - insert:
+            tableName: books
+            columns:
+              - column:
+                  name: title
+                  value: "1984"
+              - column:
+                  name: author
+                  value: "George Orwell"
+              - column:
+                  name: amount
+                  value: 5
