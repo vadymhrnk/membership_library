@@ -26,6 +26,10 @@ import org.springframework.transaction.annotation.Transactional;
 @Service
 @RequiredArgsConstructor
 public class BookServiceImpl implements BookService {
+    public static final int AMOUNT_TO_ADD = 1;
+    public static final String NO_BOOK_MESSAGE = "Can't find book with id: ";
+    public static final String NO_MEMBER_MESSAGE = "Can't find member with name: ";
+
     private final BookMapper bookMapper;
     private final BookRepository bookRepository;
     private final MemberRepository memberRepository;
@@ -44,11 +48,11 @@ public class BookServiceImpl implements BookService {
 
         if (optionalBook.isPresent()) {
             Book existingBook = optionalBook.get();
-            existingBook.setAmount(existingBook.getAmount() + 1);
+            existingBook.setAmount(existingBook.getAmount() + AMOUNT_TO_ADD);
             return bookMapper.toResponseDto(bookRepository.save(existingBook));
         }
 
-        book.setAmount(1);
+        book.setAmount(AMOUNT_TO_ADD);
         return bookMapper.toResponseDto(bookRepository.save(book));
     }
 
@@ -62,7 +66,7 @@ public class BookServiceImpl implements BookService {
     @Transactional
     public BookResponseDto updateById(Long id, UpdateBookRequestDto updateRequestDto) {
         Book book = bookRepository.findById(id)
-                .orElseThrow(() -> new EntityNotFoundException("Can't find book with id: " + id));
+                .orElseThrow(() -> new EntityNotFoundException(NO_BOOK_MESSAGE + id));
 
         book.setTitle(updateRequestDto.getTitle());
         book.setAuthor(updateRequestDto.getAuthor());
@@ -75,7 +79,7 @@ public class BookServiceImpl implements BookService {
     @Transactional
     public List<BorrowedBookResponseDto> getAllBooksBorrowedByMember(String name) {
         Member member = memberRepository.findByName(name)
-                .orElseThrow(() -> new EntityNotFoundException("Member not found"));
+                .orElseThrow(() -> new EntityNotFoundException(NO_MEMBER_MESSAGE + name));
 
         List<MemberBook> borrowedBooks = memberBookRepository.findByMemberId(member.getId());
 

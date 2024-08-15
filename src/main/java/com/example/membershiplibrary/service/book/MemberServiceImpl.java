@@ -32,6 +32,9 @@ public class MemberServiceImpl implements MemberService {
     public static final int BORROW_AMOUNT = 1;
     public static final int RETURN_AMOUNT = 1;
     public static final String NO_BORROWED_BOOKS_MESSAGE = "No borrowed books to return";
+    public static final String MEMBER_WITH_BORROWED_BOOKS_MESSAGE =
+            "Can't delete member with borrowed books";
+    public static final int BORROWED_QUANTITY_ZERO = 0;
 
     private final MemberRepository memberRepository;
     private final BookRepository bookRepository;
@@ -111,7 +114,7 @@ public class MemberServiceImpl implements MemberService {
                 );
 
         int currentBorrowedQuantity = memberBook.getBorrowedQuantity();
-        if (currentBorrowedQuantity <= 0) {
+        if (currentBorrowedQuantity <= BORROWED_QUANTITY_ZERO) {
             throw new InvalidVariableException(NO_BORROWED_BOOKS_MESSAGE);
         }
 
@@ -130,10 +133,10 @@ public class MemberServiceImpl implements MemberService {
                 .orElseThrow(() -> new EntityNotFoundException(NO_MEMBER_MESSAGE + id));
 
         boolean hasBorrowedBooks = memberBookRepository.findByMemberId(id).stream()
-                .anyMatch(memberBook -> memberBook.getBorrowedQuantity() > 0);
+                .anyMatch(memberBook -> memberBook.getBorrowedQuantity() > BORROWED_QUANTITY_ZERO);
 
         if (hasBorrowedBooks) {
-            throw new InvalidVariableException("Can't delete member with borrowed books");
+            throw new InvalidVariableException(MEMBER_WITH_BORROWED_BOOKS_MESSAGE);
         }
 
         memberRepository.deleteById(id);
