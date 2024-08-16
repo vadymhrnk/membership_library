@@ -151,12 +151,17 @@ class MemberServiceImplTest {
 
     @Test
     void borrowBook_shouldBorrowBook_whenBookIsAvailableAndMemberHasNotReachedLimit() {
+        MemberBook memberBook = new MemberBook();
+        memberBook.setMember(member);
+        memberBook.setBook(book);
+        memberBook.setBorrowedQuantity(BORROWED_QUANTITY_ONE);
+
         when(memberRepository.findById(MEMBER_BOB_ID)).thenReturn(Optional.of(member));
         when(bookRepository.findById(BOOK_THE_BOOK_ID)).thenReturn(Optional.of(book));
         when(memberBookRepository.findByMemberId(MEMBER_BOB_ID))
                 .thenReturn(Collections.emptyList());
         when(memberBookRepository.findByMemberIdAndBookId(MEMBER_BOB_ID, BOOK_THE_BOOK_ID))
-                .thenReturn(Optional.empty());
+                .thenReturn(Optional.of(memberBook));
 
         memberService.borrowBook(MEMBER_BOB_ID, BOOK_THE_BOOK_ID);
 

@@ -27,5 +27,5 @@ public class MemberBook {
     private Book book;
 
     @Column(nullable = false)
-    private int borrowedQuantity;
+    private Integer borrowedQuantity;
 }

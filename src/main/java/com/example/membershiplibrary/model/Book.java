@@ -23,5 +23,5 @@ public class Book {
     private String author;
 
     @Column(nullable = false)
-    private int amount;
+    private Integer amount;
 }
